@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- BootStrapを使う -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>WaitList</title>
+</head>
+
+<body>
+    <!-- ウェイティングリスト
+    下記ボタンから待機リストを選択するか、新規作成ボタンを押してリストを作成してください。 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>ウェイティングリスト</h1>
+                <p>
+                    下記ボタンから待機リストを選択するか、新規作成ボタンを押してリストを作成してください。<br>削除はそれぞれの待機リスト内から行うことができます。<br>
+                </p>
+                <% if(waitlists.status !="No Data" ) { %>
+                    <% if (waitlists.status=="delete" ){ %>
+                        <div class="alert alert-success" role="alert">
+                            削除しました。
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- 新規作成用フォーム -->
+                <form action="/api/waitlist/create_list" method="post">
+                    <div class="form-group">
+                        <label for="name">リスト名</label>
+                        <input type="text" class="form-control" id="listName" name="listName" placeholder="リスト名">
+                        <!-- ドロップダウンで公開状態を選択 -->
+                        <label for="public">公開状態</label>
+                        <select class="form-control" id="visibility" name="visibility">
+                            <option value="1">公開</option>
+                            <option value="0">非公開</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="create_btn">新規作成</button>
+                </form>
+                <%# idがnullでない場合に表示 %>
+                    <% if(id != "No Data" ) { %>
+                        <hr>
+                        <h4>リストを作成しました。リンクは以下のとおりです。<br>
+                            <a href="/tools/waitlist/views?id=<%= id %>">https://tools.na2na.dev/tools/waitlist/views?id=
+                                <%= id %></a>
+                        </h4>
+                        <% if (visibility==0) { %>
+                            <h4 style="color: red;">非表示設定がされているため、リンクは作成者が管理してください。<br>これは、一度しか表示されません。</h4>
+                            <% } %>
+                                <% } %>
+            </div>
+        </div>
+        <!-- リスト一覧
+        nameを表示 -->
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <!--tableタグを用いて、名前と作成日を表示する。-->
+                <!--見やすい配色-->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>リスト名(公開設定のみ)</th>
+                            <th>作成日</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (waitlists.message=="No Data" ){ %>
+                            <tr>
+                                <td colspan="2">データがありません。</td>
+                            </tr>
+                            <% } else { %>
+                                <% for(var i=0; i < waitlists.length; i++) { %>
+                                    <tr>
+                                        <td> <a href="/tools/waitlist/views?id=<%= waitlists[i].id %>">
+                                                <%= waitlists[i].name %>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <%= waitlists[i].created_at %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    //listNameが空白の場合、create_btnをdisableにする
+    document.getElementById("create_btn").disabled = true;
+    document.getElementById("listName").addEventListener("keyup", function () {
+        if (document.getElementById("listName").value == "") {
+            document.getElementById("create_btn").disabled = true;
+        } else {
+            document.getElementById("create_btn").disabled = false;
+        }
+    });
+</script>
+
+</html>

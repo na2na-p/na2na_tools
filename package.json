@@ -1,0 +1,25 @@
+{
+  "name": "na2na_tools",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "build": "npx tsc"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "dayjs": "^1.10.7",
+    "debug": "~2.6.9",
+    "dotenv": "^11.0.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "mysql2": "^2.3.3",
+    "typescript": "^4.5.4",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.8"
+  }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- BootStrapを使う -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>WaitList</title>
+</head>
+
+<body>
+    <!-- ウェイティングリスト
+    下記ボタンから待機リストを選択するか、新規作成ボタンを押してリストを作成してください。 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>ウェイティングリスト</h1>
+                <hr>
+                <h3>リスト名:<%= name %></h3>
+                <p>
+                    データの反映は、ページのリロードをしてください
+                </p>
+            </div>
+        </div>
+        <!-- 四角で囲む -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- 番号とコメントを入力するフォーム -->
+                <form action="/api/waitlist/add_waitlist" method="POST">
+                    <input type="hidden" name="list_id" value="<%= id %> ">
+                    <div class="form-group">
+                        <label for="number">出席番号</label>
+                        <input type="text" class="form-control" id="number" name="number" placeholder="番号">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">コメント</label>
+                        <input type="text" class="form-control" id="comment" name="comment" placeholder="コメント">
+                    </div>
+                    <button type="submit" class="btn btn-primary">登録</button>
+                </form>
+            </div>
+        </div>
+        <!-- リスト一覧
+        nameを表示 -->
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <!--tableタグを用いて、名前と作成日を表示する。-->
+                <!--見やすい配色-->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>確認済みにする</th>
+                            <th>出席番号</th>
+                            <th>登録時間</th>
+                            <th>コメント</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (waitlists.message=="No Data" ) { %>
+                            <tr>
+                                <td colspan="4">順番待ちはありません。</td>
+                            </tr>
+                            <% } else { %>
+                                <% for(var i=0; i < waitlists.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <form action="/api/waitlist/mark_checked" method="POST">
+                                                <input type="hidden" name="list_id" value="<%= id %>">
+                                                <input type="hidden" name="waitlist_id" value="<%= waitlists[i].id %>">
+                                                <button type="submit" class="btn btn-primary">確認済み</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <%= waitlists[i].student_no %>
+                                        </td>
+                                        <td>
+                                            <%= waitlists[i].added_at %>
+                                        </td>
+                                        <td>
+                                            <%= waitlists[i].comment %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <!-- 一覧に戻るボタン -->
+            <div class="col-md-12">
+                <a href="/tools/waitlist" class="btn btn-primary">一覧に戻る</a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="/api/waitlist//delete_list?id=<%= id %>" onclick="alert('本当に削除しますか？')" class="btn btn-danger">リストの削除</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    //id=numberのフォームのニューメリックチェック
+    document.getElementById("number").addEventListener("input", function (e) {
+        var input = e.target;
+        var regex = /^[0-9]+$/;
+        if (regex.test(input.value)) {
+            input.setCustomValidity("");
+        } else {
+            input.setCustomValidity("半角数字を入力してください");
+        }
+    });
+
+
+</script>
+
+</html>
