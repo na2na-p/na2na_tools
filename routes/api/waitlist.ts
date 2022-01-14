@@ -42,9 +42,6 @@ router.post('/add_waitlist', function(req: any, res:any, next: any) {
     id = id.replace(/\s+/g, '');
     let number: string = req.body.number;
     let comment: string = req.body.comment;
-    console.log(id);
-    console.log(number);
-    console.log(comment);
 
     //waitlist_${id}にnumber,commentを保存
     connection.query('INSERT INTO `waitlist_' + id + '` (student_no, comment) VALUES (?, ?)', [number, comment], function(err: any, results: any) {
