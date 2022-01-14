@@ -38,9 +38,8 @@ CREATE TABLE IF NOT EXISTS `na2na_tools`.`waitlist_current_hold` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-CREATE USER 'user' IDENTIFIED BY 'password';
-
-GRANT ALL ON `user`.* TO 'password';
+CREATE USER `username`@`localhost` IDENTIFIED BY `password`;
+GRANT ALL ON na2na_tools.* to 'username'@'localhost';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
