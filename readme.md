@@ -1,6 +1,7 @@
 # 導入
-[Node.js](https://nodejs.org/ja/)の導入が済んでいない場合は、インストールしてください。  
+[Node.js](https://nodejs.org/ja/)の導入が済んでいない場合は、インストールしてください。
 開発はv16.3.1 Ubuntuで行っています。 
+MySQLが必要なため、こちらの導入も済んでいない場合はインストールしてください。
 1. 適当なディレクトリへ`git clone`します
 1. `cd na2na_tools`します
 1. `cp sql/sample.sql sql/production.sql`します
