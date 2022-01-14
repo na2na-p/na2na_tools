@@ -1,5 +1,5 @@
 # 導入
-Node.jsの導入が済んでいない場合は、インストールしてください。 [Node.js](https://nodejs.org/ja/) 
+[Node.js](https://nodejs.org/ja/)の導入が済んでいない場合は、インストールしてください。  
 開発はv16.3.1 Ubuntuで行っています。 
 1. 適当なディレクトリへ`git clone`します
 1. `cd na2na_tools`します
