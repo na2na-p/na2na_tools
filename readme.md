@@ -6,6 +6,7 @@ MySQLが必要なため、こちらの導入も済んでいない場合はイン
 1. `cd na2na_tools`します
 1. `cp sql/sample.sql sql/production.sql`します
 1. `sql/production.sql`の下部にあるユーザーを適切なユーザー/パスワードに変更してください。
+1. `sql/production.sql`をMySQLに流し込みます
 1. `cp .env_sample .env`して、中のコメントを参考に設定してください。2の手順で設定したDBユーザー/パスワードを使用してください。
 1. `npm install`します
 1. `npm run build`します
