@@ -61,7 +61,7 @@ router.get('/views', function (req: any, res: any, next: any) {
     connection.query('SELECT * FROM `waitlist_' + id + '` WHERE is_checked=0 ORDER BY added_at ASC', [id], function (err: any, results: any) {
         if (err) {
             console.log(err);
-            res.render('/index', { title: 'Express' });
+            res.redirect('/tools/waitlist?error=list_not_found');
         } else {
             let waitlists: any = [];
             for (let i = 0; i < results.length; i++) {
@@ -77,7 +77,7 @@ router.get('/views', function (req: any, res: any, next: any) {
                 let name = results[0].name;
                 if (err) {
                     console.log(err);
-                    res.render('/index', { title: 'Express' });
+            res.redirect('/tools/waitlist?error=list_not_found');
                 } else {
                     //waitlistに該当データがなければ、"データがありません"と表示
                     res.render('waitlist/views', { name : name, waitlists: waitlists, id: id });
