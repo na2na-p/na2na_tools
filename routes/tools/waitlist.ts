@@ -37,7 +37,7 @@ router.get('/', function (req: any, res: any, next: any) {
     connection.query('SELECT * FROM waitlist_current_hold WHERE is_visible=1 ORDER BY created_at ASC', function (err: any, results: any) {
         if (err) {
             console.log(err);
-            res.render('index', { title: 'Express' });
+            res.redirect('/tools/waitlist?error=list_not_found');
         } else {
             //該当のデータがない場合、"No Data"を表示
             if (results.length === 0) {
