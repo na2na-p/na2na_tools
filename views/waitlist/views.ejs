@@ -110,14 +110,13 @@
 </body>
 
 <script>
-    //id=numberのフォームのニューメリックチェック
+    //id=numberのフォームに、半角英数字以外が入力されたらエラーを表示する
     document.getElementById("number").addEventListener("input", function (e) {
-        var input = e.target;
-        var regex = /^[0-9]+$/;
-        if (regex.test(input.value)) {
-            input.setCustomValidity("");
+        var regex = /^[A-Za-z0-9]+$/;
+        if (!regex.test(e.target.value)) {
+            e.target.setCustomValidity("半角英数字で入力してください");
         } else {
-            input.setCustomValidity("半角数字を入力してください");
+            e.target.setCustomValidity("");
         }
     });
 
