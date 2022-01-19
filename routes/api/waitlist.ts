@@ -98,4 +98,20 @@ router.post('/mark_checked', function(req:any, res:any, next:any) {
     );
 })
 
+router.post('/get_waitList',function(req:any, res:any, next:any){
+    console.log(req.body);
+    let id: string = req.body.id;
+    //SELECT * FROM `waitlist_' + id + '` WHERE is_checked=0 ORDER BY added_at ASC
+    //結果をJSONで返すREST API
+    connection.query('SELECT * FROM `waitlist_' + id + '` WHERE is_checked=0 ORDER BY added_at ASC', function(err: any, results: any) {
+        if (err) {
+            console.log(err);
+            res.render('index', { title: 'Express' });
+        } else {
+            res.json(results);
+        };
+    }
+    );
+});
+
 module.exports = router;
