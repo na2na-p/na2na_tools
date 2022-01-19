@@ -150,13 +150,22 @@
     window.onload = function () {
         // if (sessionStorage.getItem("is_auto_reload") && sessionStorage.getItem("reload_interval")) {
             auto_reload.checked = sessionStorage.getItem("is_auto_reload");
+            reload_interval.value = 10;
             reload_interval.value = sessionStorage.getItem("reload_interval");
         // }
         if (auto_reload.checked) {
+            //form入力中にはリロードをしないようにさせる
+            if (
+                document.activeElement.tagName == "INPUT" ||
+                document.activeElement.tagName == "TEXTAREA"
+            ) {
+                return;
+            }else{
             setInterval(function () {
                 location.reload();
             }, reload_interval.value * 1000);
         }
+    }
     }
 
     //自動リロードのチェックボックスがチェックされた時
@@ -198,7 +207,6 @@
             input.setCustomValidity("半角数字を入力してください");
         }
     });
-
 
 
 </script>
