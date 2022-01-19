@@ -12,3 +12,83 @@
     <title>WaitList</title>
 </head>
 
+<body>
+    <div id="app">
+    <!-- ウェイティングリスト
+    下記ボタンから待機リストを選択するか、新規作成ボタンを押してリストを作成してください。 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>ウェイティングリスト</h1>
+                <hr>
+                <h3>リスト名:<%= name %>
+                </h3>
+                <p>
+                    待機列の先頭は、リストの一番上です。<br>
+                    データの反映は、ページのリロードをしてください
+                </p>
+            </div>
+        </div>
+        <div class="row" id="escape_reload">
+            <div class="col-md-12">
+                <!-- 番号とコメントを入力するフォーム -->
+                <form action="/api/waitlist/add_waitlist" method="POST" id="list_form">
+                    <input type="hidden" name="list_id" value="<%= id %> ">
+                    <div class="form-group">
+                        <label for="number">出席番号</label>
+                        <input type="text" class="form-control" id="number" name="number" placeholder="番号">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">コメント</label>
+                        <input type="text" class="form-control" id="comment" name="comment" placeholder="コメント">
+                    </div>
+                    <button type="submit" class="btn btn-primary">登録</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <!-- 自動リロードのオンオフ -->
+                    <label class="switch">
+                        <input type="checkbox" id="is_auto_reload" v-model="auto_reload">
+                        <span class="slider round">自動更新する</span>
+                    </label><br>
+                    <!-- リロード間隔 -->
+                    <label for="reload_interval">リロード間隔</label>
+                    <!-- 半角数字を入力する。デフォルトは5秒 -->
+                    <input type="number" id="reload_interval" v-model="reload_interval" value="">秒(0秒の場合はリロードしない)
+                </div>
+            </div>
+        </div>
+        <!-- リスト一覧
+        nameを表示 -->
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <!--tableタグを用いて、名前と作成日を表示する。-->
+                <!--見やすい配色-->
+                <table class="table table-striped" id="list_table">
+                    <!-- Vueを用いて「確認済みにする」「出席番号」「登録時間」「コメント」を描画する -->
+                </table>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <!-- 一覧に戻るボタン -->
+            <div class="col-md-12">
+                <a href="/tools/waitlist" class="btn btn-primary">一覧に戻る</a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="/api/waitlist//delete_list?id=<%= id %>" onclick="alert('本当に削除しますか？')"
+                    class="btn btn-danger">リストの削除</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
