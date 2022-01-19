@@ -19,7 +19,7 @@ USE `na2na_tools` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `na2na_tools`.`waitlist_template` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `student_no` INT NOT NULL,
+  `student_no` VARCHAR(20) NOT NULL,
   `comment` TEXT(512) NULL,
   `added_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_checked` TINYINT(1) NULL DEFAULT 0,
