@@ -28,7 +28,7 @@
                 </p>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="escape_reload">
             <div class="col-md-12">
                 <!-- 番号とコメントを入力するフォーム -->
                 <form action="/api/waitlist/add_waitlist" method="POST" id="list_form">
@@ -49,11 +49,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <!-- トグルスイッチを配置 -->
                     <!-- 自動リロードのオンオフ -->
                     <label class="switch">
                         <input type="checkbox" id="is_auto_reload" v-model="auto_reload">
-                        <span class="slider round">自動更新する(一度チェック入れると外せなくなるバグ抱えてます)</span>
+                        <span class="slider round">自動更新する</span>
                     </label><br>
                     <!-- リロード間隔 -->
                     <label for="reload_interval">リロード間隔</label>
@@ -153,12 +152,9 @@
             reload_interval.value = 10;
             reload_interval.value = sessionStorage.getItem("reload_interval");
         // }
-        if (auto_reload.checked) {
-            //form入力中にはリロードをしないようにさせる
-            if (
-                document.activeElement.tagName == "INPUT" ||
-                document.activeElement.tagName == "TEXTAREA"
-            ) {
+        if (sessionStorage.getItem("is_auto_reload") === true) {
+            //id=escape_reloadにマウスが乗ったときはリロードをさせない...ようにしたい
+            if (document.activeElement.tagName == "INPUT" || document.activeElement.tagName == "TEXTAREA") {
                 return;
             }else{
             setInterval(function () {
