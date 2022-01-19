@@ -130,12 +130,12 @@
     //id=numberのフォームのニューメリックチェック
     document.getElementById("number").addEventListener("input", function (e) {
         var input = e.target;
-        var regex = /^[0-9]+$/;
+        var regex = /^[A-Za-z0-9]+$/;
         if (regex.test(input.value)) {
             input.setCustomValidity("");
         } else {
-            input.setCustomValidity("半角数字を入力してください");
-        } 内
+            input.setCustomValidity("半角英数字を入力してください");
+        }
     });
 
     //5秒ごとにリロードする
@@ -148,20 +148,28 @@
     //セッションにis_auto_reloadとreload_intervalがある場合
     window.onload = function () {
         // if (sessionStorage.getItem("is_auto_reload") && sessionStorage.getItem("reload_interval")) {
-            auto_reload.checked = sessionStorage.getItem("is_auto_reload");
-            reload_interval.value = 10;
-            reload_interval.value = sessionStorage.getItem("reload_interval");
+        auto_reload.checked = sessionStorage.getItem("is_auto_reload");
+        console.log("a")
+        reload_interval.value = 10;
+        reload_interval.value = sessionStorage.getItem("reload_interval");
         // }
-        if (sessionStorage.getItem("is_auto_reload") === true) {
-            //id=escape_reloadにマウスが乗ったときはリロードをさせない...ようにしたい
+        console.log("b")
+        console.log(sessionStorage.getItem("is_auto_reload") + " " + sessionStorage.getItem("reload_interval"))
+        if (sessionStorage.getItem("is_auto_reload") == "true") {
+            console.log("c")
             if (document.activeElement.tagName == "INPUT" || document.activeElement.tagName == "TEXTAREA") {
+                console.log("e")
                 return;
-            }else{
+            }
+            if (reload_interval.value <= 0) {
+                console.log("exit")
+                return;
+            }
             setInterval(function () {
+                console.log("d")
                 location.reload();
             }, reload_interval.value * 1000);
         }
-    }
     }
 
     //自動リロードのチェックボックスがチェックされた時
@@ -174,6 +182,9 @@
         //リロード間隔の値を保存
         sessionStorage.setItem("reload_interval", reload_interval.value);
         if (auto_reload.checked) {
+            if (reload_interval.value <= 0) {
+                return;
+            }
             setInterval(function () {
                 location.reload();
             }, reload_interval.value * 1000);
@@ -186,6 +197,9 @@
         //リロード間隔の値を保存
         sessionStorage.setItem("reload_interval", reload_interval.value);
         if (auto_reload.checked) {
+            if (reload_interval.value <= 0) {
+                return;
+            }
             setInterval(function () {
                 location.reload();
             }, reload_interval.value * 1000);
