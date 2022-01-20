@@ -10,6 +10,7 @@ require('dotenv').config();
 const indexRouter = require('./routes/index');
 const waitlistRouter = require('./routes/tools/waitlist');
 const api_waitlistRouter = require('./routes/api/waitlist');
+const webapi_webuiRouter = require('./routes/tools/webapi_webui');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/tools/waitlist', waitlistRouter);
 app.use('/api/waitlist', api_waitlistRouter);
+app.use('/tools/webapi_webui', webapi_webuiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: any, res: any, next: (arg0: any) => void) {
