@@ -71,6 +71,33 @@
                 <!--見やすい配色-->
                 <table class="table table-striped" id="list_table">
                     <!-- Vueを用いて「確認済みにする」「出席番号」「登録時間」「コメント」を描画する -->
+                    <thead>
+                        <tr>
+                            <th>確認済み</th>
+                            <th>出席番号</th>
+                            <th>登録時間</th>
+                            <th>コメント</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(waitlist, index) in waitlists">
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox" v-model="waitlist.is_checked">
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <%= waitlist.number %>
+                            </td>
+                            <td>
+                                <%= waitlist.created_at %>
+                            </td>
+                            <td>
+                                <%= waitlist.comment %>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -91,4 +118,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    //http://localhost:3001/api/waitlist/get_waitListにPOSTリクエストを送り、待機リストを取得する
+    //id=<%= id %>と設定する
+    //待機リストを取得したら、id=list_tableへ、Vue.jsで表示する
+
+    //Vue.jsで表示する
+</script>
 </body>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Tools</title>
+</head>
+
+<body>
+    <!-- GET/POST送信ができる、シンプルなアプリ
+    リクエストヘッダーとリクエストボディ、リクエストデータを指定できる
+    レスポンスヘッダーとレスポンスボディ、レスポンスデータを表示する -->
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>GET/POST叩くやつ</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="url">URL</label>
+                                        <input type="text" class="form-control" v-model="url" id="url">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="method">Method</label>
+                                        <select class="form-control" v-model="method" id="method">
+                                            <option value="GET">GET</option>
+                                            <option value="POST">POST</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <!-- content typeの指定
+                                    ドロップダウン -->
+                                    <div class="form-group">
+                                        <label for="contentType">Content Type</label>
+                                        <select class="form-control" v-model="contentType" id="contentType">
+                                            <option value="application/json">application/json</option>
+                                            <option value="application/x-www-form-urlencoded">
+                                                application/x-www-form-urlencoded</option>
+                                            <option value="text/plain">text/plain</option>
+                                            <option value="text/html">text/html</option>
+                                            <option value="text/xml">text/xml</option>
+                                            <option value="application/xml">application/xml</option>
+                                            <option value="multipart/form-data">multipart/form-data</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="request-data">Request Data</label>
+                                        <textarea class="form-control" v-model="requestData" id="request-data"
+                                            rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary" @click="send">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12" v-if="responseData">
+                                    <h3>Response Data</h3>
+                                    <pre>{{responseData}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                url: '',
+                method: 'GET',
+                contentType: 'application/json',
+                requestData: '',
+                responseData: '',
+            },
+            methods: {
+                send: function () {
+                    var self = this;
+                    axios({
+                        method: this.method,
+                        url: this.url,
+                        data: this.requestData,
+                        headers: {
+                            'Content-Type': this.contentType
+                        }
+                    }).then(function (response) {
+                        self.responseData = JSON.stringify(response.data, null, 2);
+                    }).catch(function (error) {
+                        self.responseData = JSON.stringify(error, null, 2);
+                    });
+                }
+            },
+        });
+    </script>
+
+</body>
+
+</html>
