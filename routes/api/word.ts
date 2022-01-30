@@ -24,6 +24,9 @@ router.post('/is_includeNgWord', async (req: any, res: any) => {
                 break;
             }
         }
+        //CORSを許可する
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.send(isInclude);
     }
 });
