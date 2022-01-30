@@ -1,13 +1,14 @@
 export{}
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const MeCab = require('mecab-async')
 const mecab = new MeCab();
 module.exports = router;
 
 const ngList = require("../../data/NGWord.json")
 
-router.post('/is_includeNgWord', async (req: any, res: any) => {
+router.post('/is_includeNgWord', cors() , async (req: any, res: any) => {
     if (!req.body.text) {
         res.status(400).send("Bad Request");
     }else{
@@ -24,9 +25,6 @@ router.post('/is_includeNgWord', async (req: any, res: any) => {
                 break;
             }
         }
-        //CORSを許可する
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.send(isInclude);
     }
 });
