@@ -1,10 +1,9 @@
-export { }
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const uuid = require('uuid');
-const dayjs = require('dayjs');
+import uuid from 'uuid';
+import dayjs from 'dayjs';
 
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 let connection: any;
 let result: any;
 connection = mysql.createConnection({
@@ -17,21 +16,24 @@ connection = mysql.createConnection({
 
 
 
-router.get('/', function (req: any, res: any, next: any) {
-    let status:string = "No Data";
+router.get('/', function (req, res, _next: any) {
+    let status: string = "No Data";
     let id: string = "No Data";
     let visibility: number = 1;
     let waitlists: any = [];
     //GETパラメータに、idがある場合は変数に設定
     if (req.query.id) {
+        // @ts-ignore
         id = req.query.id;
         //idから空白を除去
         id = id.replace(/\s+/g, '');
     }
     if (req.query.visibility) {
+        // @ts-ignore
         visibility = req.query.visibility.replace(/\s+/g, '');
     }
     if (req.query.status) {
+        // @ts-ignore
         waitlists.status = req.query.status.replace(/\s+/g, '');
     }
     connection.query('SELECT * FROM waitlist_current_hold WHERE is_visible=1 ORDER BY created_at ASC', function (err: any, results: any) {
@@ -55,7 +57,7 @@ router.get('/', function (req: any, res: any, next: any) {
 });
 
 
-router.get('/views', function (req: any, res: any, next: any) {
+router.get('/views', function (req, res, _next) {
     //getリクエストにあるidを取得
     let id = req.query.id;
     connection.query('SELECT * FROM `waitlist_' + id + '` WHERE is_checked=0 ORDER BY added_at ASC', [id], function (err: any, results: any) {
@@ -77,14 +79,14 @@ router.get('/views', function (req: any, res: any, next: any) {
                 let name = results[0].name;
                 if (err) {
                     console.log(err);
-            res.redirect('/tools/waitlist?error=list_not_found');
+                    res.redirect('/tools/waitlist?error=list_not_found');
                 } else {
                     //waitlistに該当データがなければ、"データがありません"と表示
-                    res.render('waitlist/views', { name : name, waitlists: waitlists, id: id });
+                    res.render('waitlist/views', { name: name, waitlists: waitlists, id: id });
                 }
             });
         }
     });
 });
 
-module.exports = router;
+export { router as waitListRouter };

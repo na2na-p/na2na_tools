@@ -1,13 +1,12 @@
-export{}
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const cors = require('cors');
+import cors from 'cors';
 const MeCab = require('mecab-async')
 const mecab = new MeCab();
-module.exports = router;
 
-const ngList = require("../../data/NGWord.json")
+import ngList from "../../data/NGWord.json";
 
+// @ts-ignore
 router.post('/is_includeNgWord', cors() , async (req: any, res: any) => {
     if (!req.body.text) {
         res.status(400).send("Bad Request");
@@ -41,3 +40,5 @@ async function exec_mecab(text:string){
     }
     );
 }
+
+export {router as apiWordRouter};

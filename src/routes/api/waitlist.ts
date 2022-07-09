@@ -1,9 +1,8 @@
-export{}
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const uuid = require('uuid');
+import uuid from 'uuid';
 
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 let connection: any;
 let result: any;
 connection = mysql.createConnection({
@@ -14,17 +13,17 @@ connection = mysql.createConnection({
     multipleStatements: true
 });
 
-router.post('/create_list', function(req: any, res: any, next: any) {
+router.post('/create_list', function(req, res, _next) {
     //POSTで送られてきたリスト名を取得
     let listName: string = req.body.listName;
     let id:string = uuid.v4();
     let visibility:number = req.body.visibility;
     //リスト名をDBに保存
-    connection.query('INSERT INTO waitlist_current_hold (id, name, is_visible) VALUES (?, ?, ?)', [id, listName, visibility], function(err: any, results: any) {
+    connection.query('INSERT INTO waitlist_current_hold (id, name, is_visible) VALUES (?, ?, ?)', [id, listName, visibility], function(_err: unknown, _results: any) {
 
         //idをテーブル名に設定し、リストを作成する。
         //waitlist_templateのテーブル構造をそのまま用いる
-        connection.query('CREATE TABLE `waitlist_' + id + '` LIKE waitlist_template', function(err: any, results: any) {
+        connection.query('CREATE TABLE `waitlist_' + id + '` LIKE waitlist_template', function(err: any, _results: any) {
             if (err) {
                 console.log(err);
                 res.render('index', { title: 'Express' });
@@ -35,7 +34,7 @@ router.post('/create_list', function(req: any, res: any, next: any) {
         });
 });
 
-router.post('/add_waitlist', function(req: any, res:any, next: any) {
+router.post('/add_waitlist', function(req, res, _next) {
   //postリクエストから、id,number,commentを取得
     let id: string = req.body.list_id;
     //idから空白を除去
@@ -44,7 +43,7 @@ router.post('/add_waitlist', function(req: any, res:any, next: any) {
     let comment: string = req.body.comment;
 
     //waitlist_${id}にnumber,commentを保存
-    connection.query('INSERT INTO `waitlist_' + id + '` (student_no, comment) VALUES (?, ?)', [number, comment], function(err: any, results: any) {
+    connection.query('INSERT INTO `waitlist_' + id + '` (student_no, comment) VALUES (?, ?)', [number, comment], function(err: unknown, _results: any) {
         if (err) {
             console.log(err);
             res.render('index', { title: 'Express' });
@@ -56,20 +55,20 @@ router.post('/add_waitlist', function(req: any, res:any, next: any) {
     );
 });
 
-router.get('/delete_list', function(req:any, res:any, next:any) {
+router.get('/delete_list', function(req, res, _next) {
     //getで渡されたidを取得
-    let id: string = req.query.id;
+    let id: string = req.query.id as string;
     //idから空白を除去
     id = id.replace(/\s+/g, '');
     let table_name:string = 'waitlist_' + id;
     //table_nameを削除
-    connection.query('DROP TABLE `' + table_name + '`', function(err: any, results: any) {
+    connection.query('DROP TABLE `' + table_name + '`', function(err: unknown, _results: any) {
         if (err) {
             console.log(err);
             res.render('index', { title: 'Express' });
         } else {
             //waitlist_current_holdからidを削除
-            connection.query('DELETE FROM waitlist_current_hold WHERE id = ?', [id], function(err: any, results: any) {
+            connection.query('DELETE FROM waitlist_current_hold WHERE id = ?', [id], function(err: unknown, _results: any) {
                 if (err) {
                     console.log(err);
                     res.render('index', { title: 'Express' });
@@ -82,12 +81,12 @@ router.get('/delete_list', function(req:any, res:any, next:any) {
     );
 })
 
-router.post('/mark_checked', function(req:any, res:any, next:any) {
+router.post('/mark_checked', function(req, res, _next) {
     //getで渡されたwaitlist_id,list_idを取得
     let waitlist_id: string = req.body.waitlist_id;
     let list_id: string = req.body.list_id;
     //waitlist_${list_id}からwaitlist_idに該当するフィールドに対して、is_checkedを1にする
-    connection.query('UPDATE `waitlist_' + list_id + '` SET is_checked = 1 WHERE id = ?', [waitlist_id], function(err: any, results: any) {
+    connection.query('UPDATE `waitlist_' + list_id + '` SET is_checked = 1 WHERE id = ?', [waitlist_id], function(err: unknown, _results: any) {
         if (err) {
             console.log(err);
             res.render('index', { title: 'Express' });
@@ -98,12 +97,12 @@ router.post('/mark_checked', function(req:any, res:any, next:any) {
     );
 })
 
-router.post('/get_waitList',function(req:any, res:any, next:any){
+router.post('/get_waitList',function(req, res, _next){
     console.log(req.body);
     let id: string = req.body.id;
     //SELECT * FROM `waitlist_' + id + '` WHERE is_checked=0 ORDER BY added_at ASC
     //結果をJSONで返すREST API
-    connection.query('SELECT * FROM `waitlist_' + id + '` WHERE is_checked=0 ORDER BY added_at ASC', function(err: any, results: any) {
+    connection.query('SELECT * FROM `waitlist_' + id + '` WHERE is_checked=0 ORDER BY added_at ASC', function(err: unknown, results: any) {
         if (err) {
             console.log(err);
             res.render('index', { title: 'Express' });
@@ -114,4 +113,4 @@ router.post('/get_waitList',function(req:any, res:any, next:any){
     );
 });
 
-module.exports = router;
+export {router as apiWaitListRouter};

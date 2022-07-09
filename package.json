@@ -12,7 +12,7 @@
     "dayjs": "^1.10.7",
     "debug": "~2.6.9",
     "dotenv": "^11.0.0",
-    "ejs": "~2.6.1",
+    "ejs": "^3.1.8",
     "express": "~4.16.1",
     "fs-extra": "^10.0.0",
     "http-errors": "~1.6.3",
@@ -23,6 +23,12 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/node": "^17.0.8"
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/http-errors": "^1.8.2",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^17.0.8",
+    "@types/uuid": "^8.3.4"
   }
 }
